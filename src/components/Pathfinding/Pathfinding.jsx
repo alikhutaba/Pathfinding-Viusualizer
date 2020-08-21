@@ -18,7 +18,7 @@ export const PATH = "path";
 
 export const BFS = "BFS";
 export const DFS = "DFS";
-export const ASTAR = "AStar";
+export const ASTAR = "A* Search";
 export const DIJKSTRA = "Dijkstra";
 
 const BIG_NODE_SIZE = 45;
@@ -81,7 +81,6 @@ class Pathfinding extends React.Component {
   }
 
   async setUpGrid(size, clearBoard) {
-
     const grid = [];
     let i, j;
     let height = Math.floor((this.state.height - 160) / size);
@@ -116,40 +115,52 @@ class Pathfinding extends React.Component {
       let yEnd = Math.floor(Math.random() * (width - 1) + 1);
       grid[xStart][yStart].status = START;
       grid[xEnd][yEnd].status = TARGET;
-      this.setState({ targetPoint: grid[xEnd][yEnd], startPoint: grid[xStart][yStart] });
-
+      this.setState({
+        targetPoint: grid[xEnd][yEnd],
+        startPoint: grid[xStart][yStart],
+      });
     } else {
       grid[5][5].status = START;
       grid[height - 5][width - 5].status = TARGET;
-      this.setState({ targetPoint: grid[height - 5][width - 5], startPoint: grid[5][5] });
+      this.setState({
+        targetPoint: grid[height - 5][width - 5],
+        startPoint: grid[5][5],
+      });
     }
     this.setState({ grid: grid });
   }
-
 
   async runAlgorithm(grid, algorithm, startPoint, targetPoint, withAnimations) {
     if (algorithm === "") return;
 
     let fun =
-      algorithm === BFS ? bfs
-        : algorithm === DFS ? dfs
-          : algorithm === ASTAR ? aStar
-            : algorithm === DIJKSTRA ? dijkstra : null;
+      algorithm === BFS
+        ? bfs
+        : algorithm === DFS
+        ? dfs
+        : algorithm === ASTAR
+        ? aStar
+        : algorithm === DIJKSTRA
+        ? dijkstra
+        : null;
 
-    if (!fun) return
+    if (!fun) return;
 
     await this.clearpath();
     var result = fun(grid, startPoint, targetPoint);
 
-    this.setState({ animations: result.animation, isAlgorithmRun: true, pathNodesNumber: result.pathSize, visitedNodesNumber: result.animation.length - result.pathSize, showPath: true });
+    this.setState({
+      animations: result.animation,
+      isAlgorithmRun: true,
+      pathNodesNumber: result.pathSize,
+      visitedNodesNumber: result.animation.length - result.pathSize,
+      showPath: true,
+    });
 
     if (withAnimations)
       this.runanimation(JSON.parse(JSON.stringify(result.animation)));
-    else
-      this.changePath(result.animation)
-
+    else this.changePath(result.animation);
   }
-
 
   runanimation(animations) {
     if (!animations.length) {
@@ -162,31 +173,31 @@ class Pathfinding extends React.Component {
       var node = animations[0][1];
 
       if (animations[0][0] === PATH)
-        document.getElementById(`${node.height}-${node.width}`).className = "path-node";
+        document.getElementById(`${node.height}-${node.width}`).className =
+          "path-node";
       else
-        document.getElementById(`${node.height}-${node.width}`).className = "visit-node";
+        document.getElementById(`${node.height}-${node.width}`).className =
+          "visit-node";
 
       animations.shift();
       this.runanimation(animations);
     }, this.state.speed);
   }
 
-
   changePath(animations) {
-
     for (let i = 0; i < animations.length; i++) {
       var node = animations[i][1];
       if (animations[i][0] === PATH)
-        document.getElementById(`${node.height}-${node.width}`).className = "path-node";
+        document.getElementById(`${node.height}-${node.width}`).className =
+          "path-node";
       else
-        document.getElementById(`${node.height}-${node.width}`).className = "visit-node2";
+        document.getElementById(`${node.height}-${node.width}`).className =
+          "visit-node2";
     }
     this.setState({ isAlgorithmRun: false });
   }
 
-
   async clearpath() {
-
     const animations = this.state.animations;
     const grid = this.state.grid;
 
@@ -194,37 +205,42 @@ class Pathfinding extends React.Component {
       const node = animations[i][1];
 
       if (grid[node.height][node.width].status === SPACE)
-        document.getElementById(`${node.height}-${node.width}`).className = "space-node";
+        document.getElementById(`${node.height}-${node.width}`).className =
+          "space-node";
 
       if (grid[node.height][node.width].status === WALL)
-        document.getElementById(`${node.height}-${node.width}`).className = "wall-node";
+        document.getElementById(`${node.height}-${node.width}`).className =
+          "wall-node";
 
       grid[node.height][node.width].h = 0;
       grid[node.height][node.width].g = 0;
       grid[node.height][node.width].distance = Infinity;
     }
-    this.setState({ grid: grid, animations: [], pathNodesNumber: 0, visitedNodesNumber: 0, showPath: false });
+    this.setState({
+      grid: grid,
+      animations: [],
+      pathNodesNumber: 0,
+      visitedNodesNumber: 0,
+      showPath: false,
+    });
   }
-
 
   changeBoard(status) {
     this.setState({ clearBoard: status });
     this.setUpGrid(this.state.nodeSize, status);
   }
 
-
   changeSize(size) {
     this.setState({ nodeSize: size });
     this.setUpGrid(size, this.state.clearBoard);
   }
 
-
   onMouseDown(rowIdx, nodeIdx) {
-    const grid = this.state.grid
+    const grid = this.state.grid;
     var node = grid[rowIdx][nodeIdx];
 
-    grid[rowIdx][nodeIdx].status = node.status === WALL ? SPACE
-      : node.status === SPACE ? WALL : node.status;
+    grid[rowIdx][nodeIdx].status =
+      node.status === WALL ? SPACE : node.status === SPACE ? WALL : node.status;
 
     if (grid[rowIdx][nodeIdx].status === START)
       this.setState({ startNodePressed: true });
@@ -236,209 +252,346 @@ class Pathfinding extends React.Component {
   }
 
   onMouseEnter(rowIdx, nodeIdx) {
-
     if (!this.state.mouseIsPressed) return;
 
-    const grid = this.state.grid
+    const grid = this.state.grid;
 
     if (!this.state.startNodePressed && !this.state.EndNodePressed) {
       var node = grid[rowIdx][nodeIdx];
-      grid[rowIdx][nodeIdx].status = node.status === WALL ? SPACE
-        : node.status === SPACE ? WALL : node.status;
+      grid[rowIdx][nodeIdx].status =
+        node.status === WALL
+          ? SPACE
+          : node.status === SPACE
+          ? WALL
+          : node.status;
     }
 
-    if (this.state.startNodePressed && grid[rowIdx][nodeIdx].status !== TARGET) {
-
+    if (
+      this.state.startNodePressed &&
+      grid[rowIdx][nodeIdx].status !== TARGET
+    ) {
       let startNode = this.state.startPoint;
-      let previousStartNodeStatus = grid[rowIdx][nodeIdx].status
-      grid[startNode.height][startNode.width].status = this.state.previousStartNodeStatus;
+      let previousStartNodeStatus = grid[rowIdx][nodeIdx].status;
+      grid[startNode.height][
+        startNode.width
+      ].status = this.state.previousStartNodeStatus;
       grid[rowIdx][nodeIdx].status = START;
-      this.setState({ startPoint: grid[rowIdx][nodeIdx], previousStartNodeStatus: previousStartNodeStatus });
+      this.setState({
+        startPoint: grid[rowIdx][nodeIdx],
+        previousStartNodeStatus: previousStartNodeStatus,
+      });
       if (this.state.showPath)
-        this.runAlgorithm(grid, this.state.algorithm, grid[rowIdx][nodeIdx], this.state.targetPoint, false);
+        this.runAlgorithm(
+          grid,
+          this.state.algorithm,
+          grid[rowIdx][nodeIdx],
+          this.state.targetPoint,
+          false
+        );
     }
 
     if (this.state.EndNodePressed && grid[rowIdx][nodeIdx].status !== START) {
-
       let endNode = this.state.targetPoint;
-      let previousEndNodeStatus = grid[rowIdx][nodeIdx].status
-      grid[endNode.height][endNode.width].status = this.state.previousEndNodeStatus;
+      let previousEndNodeStatus = grid[rowIdx][nodeIdx].status;
+      grid[endNode.height][
+        endNode.width
+      ].status = this.state.previousEndNodeStatus;
       grid[rowIdx][nodeIdx].status = TARGET;
-      this.setState({ targetPoint: grid[rowIdx][nodeIdx], previousEndNodeStatus: previousEndNodeStatus });
+      this.setState({
+        targetPoint: grid[rowIdx][nodeIdx],
+        previousEndNodeStatus: previousEndNodeStatus,
+      });
       if (this.state.showPath)
-        this.runAlgorithm(grid, this.state.algorithm, this.state.startPoint, grid[rowIdx][nodeIdx], false);
+        this.runAlgorithm(
+          grid,
+          this.state.algorithm,
+          this.state.startPoint,
+          grid[rowIdx][nodeIdx],
+          false
+        );
     }
 
     this.setState({ grid: grid });
   }
 
   onMouseUp() {
-
-
     if (this.state.startNodePressed)
       this.setState({ mouseIsPressed: false, startNodePressed: false });
-    else
-      if (this.state.EndNodePressed)
-        this.setState({ mouseIsPressed: false, EndNodePressed: false });
-      else
-        this.setState({ mouseIsPressed: false });
-
+    else if (this.state.EndNodePressed)
+      this.setState({ mouseIsPressed: false, EndNodePressed: false });
+    else this.setState({ mouseIsPressed: false });
   }
 
-
-
   render() {
-
-    const { grid, algorithm, startPoint, targetPoint, isAlgorithmRun, nodeSize, visitedNodesNumber, pathNodesNumber, showPath } = this.state;
+    const {
+      grid,
+      algorithm,
+      startPoint,
+      targetPoint,
+      isAlgorithmRun,
+      nodeSize,
+      visitedNodesNumber,
+      pathNodesNumber,
+      showPath,
+    } = this.state;
 
     return (
       <div className="mainContainer">
-
         {/* toolbar */}
         <div className="main-bar row">
-          <div className="buttons-bar">
+          {/* DEV */}
+          <div className="devop">
+            <h6 className="developed">Developed by</h6>
+            <h6 className="developed">Ali Khutaba</h6>
+          </div>
 
-            {/* algorithm Buttons */}
-            <div className="main-button">
-              <button type="button" className="btn btn-outline-primary" data-toggle="dropdown">{algorithm === "" ? "Algorithm" : algorithm}<h5 className="dropdown-toggle"></h5> </button>
+          {/* DEV */}
+          <div className="social-pic">
+            <a
+              href="https://www.linkedin.com/in/ali-khutaba-843627173/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                className="linkedin-img"
+                src="https://www.freepnglogos.com/uploads/linkedin-logo-hd-png-3.png"
+                alt="Click her"
+              ></img>
+            </a>
+          </div>
 
-              <div className="dropdown-menu">
-                <button onClick={!isAlgorithmRun ? () => this.setState({ algorithm: BFS }) : null} type="button" className=" dropdown-item">
-                  <h6>Breadth First Search (BFS)</h6>
-                </button>
-                <button onClick={!isAlgorithmRun ? () => this.setState({ algorithm: DFS }) : null} type="button" className="dropdown-item">
-                  <h6>Depth First Search (DFS)</h6>
-                </button>
-                <button onClick={!isAlgorithmRun ? () => this.setState({ algorithm: DIJKSTRA }) : null} type="button" className="dropdown-item">
-                  <h6>Dijkstra Algorithm</h6>
-                </button>
-                <button onClick={!isAlgorithmRun ? () => this.setState({ algorithm: ASTAR }) : null} type="button" className="dropdown-item">
-                  <h6>A* Search</h6>
-                </button>
-              </div>
-            </div>
+          {/* Github */}
+          <div className="social-pic">
+            <a
+              href="https://github.com/alikhutaba"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                className="github-img"
+                src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/2b14985a-c66e-4dbd-b09c-609fe0678dae/d5ariic-ff63c049-4a2e-46bb-bae5-a420d50a4e54.png"
+                alt="Click her"
+              ></img>
+            </a>
+          </div>
 
-            {/* board Buttons */}
-            <div className="main-button">
-              <button type="button" className="btn btn-outline-primary" data-toggle="dropdown">Board<h5 className="dropdown-toggle"></h5></button>
+          {/* algorithm Buttons */}
+          <div className="main-button">
+            <button
+              type="button"
+              className="btn btn-outline-primary"
+              data-toggle="dropdown"
+            >
+              {algorithm === "" ? "Algorithm" : algorithm}
+              <a className="dropdown-toggle"></a>{" "}
+            </button>
 
-              <div className="dropdown-menu">
-                <button onClick={!isAlgorithmRun ? () => this.changeBoard(false) : null} type="button" className="dropdown-item">
-                  <h6>Random Maze</h6>
-                </button>
-                <button onClick={!isAlgorithmRun ? () => this.clearpath() : null} type="button" className="dropdown-item">
-                  <h6>Clear Path</h6>
-                </button>
-                <button onClick={!isAlgorithmRun ? () => this.changeBoard(true) : null} type="button" className="dropdown-item">
-                  <h6>Clear Board</h6>
-                </button>
-              </div>
-            </div>
-
-            {/* Size Buttons */}
-            <div className="main-button">
-              <button type="button" className="btn btn-outline-primary" data-toggle="dropdown">Nodes<h5 className="dropdown-toggle"></h5></button>
-
-              <div className="dropdown-menu">
-                <button onClick={!isAlgorithmRun ? () => this.changeSize(BIG_NODE_SIZE) : null} type="button" className="dropdown-item">
-                  <h6>Big Nodes</h6>
-                </button>
-                <button onClick={!isAlgorithmRun ? () => this.changeSize(MEDIUM_NODE_SIZE) : null} type="button" className="dropdown-item">
-                  <h6>Medium Nodes</h6>
-                </button>
-                <button onClick={!isAlgorithmRun ? () => this.changeSize(SMALL_NODE_SIZE) : null} type="button" className="dropdown-item">
-                  <h6>Small Nodes</h6>
-                </button>
-              </div>
-            </div>
-
-            {/* Size Buttons */}
-            <div className="main-button">
-              <button type="button" className="btn btn-outline-primary" data-toggle="dropdown">Speed<h5 className="dropdown-toggle"></h5></button>
-
-              <div className="dropdown-menu">
-                <button onClick={() => this.setState({ speed: FAST })} type="button" className="dropdown-item">
-                  <h6>Fast</h6>
-                </button>
-                <button onClick={() => this.setState({ speed: AVERAGE })} type="button" className="dropdown-item">
-                  <h6>Average</h6>
-                </button>
-                <button onClick={() => this.setState({ speed: SLOW })} type="button" className="dropdown-item">
-                  <h6>Slow</h6>
-                </button>
-              </div>
-            </div>
-
-            {/* run algorithm */}
-            <div className="main-button">
+            <div className="dropdown-menu">
               <button
-                onClick={!isAlgorithmRun ? () => this.runAlgorithm(grid, algorithm, startPoint, targetPoint, true) : null}
-                style={isAlgorithmRun ? { cursor: "not-allowed" } : null}
+                onClick={
+                  !isAlgorithmRun
+                    ? () => this.setState({ algorithm: BFS })
+                    : null
+                }
                 type="button"
-                className=" btn btn-outline-danger"
+                className=" dropdown-item"
               >
-                {!isAlgorithmRun ? "Run" : algorithm}
+                <h6>Breadth First Search (BFS)</h6>
+              </button>
+              <button
+                onClick={
+                  !isAlgorithmRun
+                    ? () => this.setState({ algorithm: DFS })
+                    : null
+                }
+                type="button"
+                className="dropdown-item"
+              >
+                <h6>Depth First Search (DFS)</h6>
+              </button>
+              <button
+                onClick={
+                  !isAlgorithmRun
+                    ? () => this.setState({ algorithm: DIJKSTRA })
+                    : null
+                }
+                type="button"
+                className="dropdown-item"
+              >
+                <h6>Dijkstra Algorithm</h6>
+              </button>
+              <button
+                onClick={
+                  !isAlgorithmRun
+                    ? () => this.setState({ algorithm: ASTAR })
+                    : null
+                }
+                type="button"
+                className="dropdown-item"
+              >
+                <h6>A* Search</h6>
               </button>
             </div>
           </div>
 
+          {/* board Buttons */}
+          <div className="main-button">
+            <button
+              type="button"
+              className="btn btn-outline-primary"
+              data-toggle="dropdown"
+            >
+              Board<a className="dropdown-toggle"></a>
+            </button>
+
+            <div className="dropdown-menu">
+              <button
+                onClick={!isAlgorithmRun ? () => this.changeBoard(false) : null}
+                type="button"
+                className="dropdown-item"
+              >
+                <h6>Random Maze</h6>
+              </button>
+              <button
+                onClick={!isAlgorithmRun ? () => this.clearpath() : null}
+                type="button"
+                className="dropdown-item"
+              >
+                <h6>Clear Path</h6>
+              </button>
+              <button
+                onClick={!isAlgorithmRun ? () => this.changeBoard(true) : null}
+                type="button"
+                className="dropdown-item"
+              >
+                <h6>Clear Board</h6>
+              </button>
+            </div>
+          </div>
+
+          {/* Size Buttons */}
+          <div className="main-button">
+            <button
+              type="button"
+              className="btn btn-outline-primary"
+              data-toggle="dropdown"
+            >
+              Nodes<a className="dropdown-toggle"></a>
+            </button>
+
+            <div className="dropdown-menu">
+              <button
+                onClick={
+                  !isAlgorithmRun ? () => this.changeSize(BIG_NODE_SIZE) : null
+                }
+                type="button"
+                className="dropdown-item"
+              >
+                <h6>Big Nodes</h6>
+              </button>
+              <button
+                onClick={
+                  !isAlgorithmRun
+                    ? () => this.changeSize(MEDIUM_NODE_SIZE)
+                    : null
+                }
+                type="button"
+                className="dropdown-item"
+              >
+                <h6>Medium Nodes</h6>
+              </button>
+              <button
+                onClick={
+                  !isAlgorithmRun
+                    ? () => this.changeSize(SMALL_NODE_SIZE)
+                    : null
+                }
+                type="button"
+                className="dropdown-item"
+              >
+                <h6>Small Nodes</h6>
+              </button>
+            </div>
+          </div>
+
+          {/* Size Buttons */}
+          <div className="main-button">
+            <button
+              type="button"
+              className="btn btn-outline-primary"
+              data-toggle="dropdown"
+            >
+              Speed<a className="dropdown-toggle"></a>
+            </button>
+
+            <div className="dropdown-menu">
+              <button
+                onClick={() => this.setState({ speed: FAST })}
+                type="button"
+                className="dropdown-item"
+              >
+                <h6>Fast</h6>
+              </button>
+              <button
+                onClick={() => this.setState({ speed: AVERAGE })}
+                type="button"
+                className="dropdown-item"
+              >
+                <h6>Average</h6>
+              </button>
+              <button
+                onClick={() => this.setState({ speed: SLOW })}
+                type="button"
+                className="dropdown-item"
+              >
+                <h6>Slow</h6>
+              </button>
+            </div>
+          </div>
+
+          {/* run algorithm */}
+          <div className="main-button">
+            <button
+              onClick={
+                !isAlgorithmRun
+                  ? () =>
+                      this.runAlgorithm(
+                        grid,
+                        algorithm,
+                        startPoint,
+                        targetPoint,
+                        true
+                      )
+                  : null
+              }
+              style={isAlgorithmRun ? { cursor: "not-allowed" } : null}
+              type="button"
+              className=" btn btn-outline-danger"
+            >
+              {!isAlgorithmRun ? "Run" : algorithm}
+            </button>
+          </div>
 
           {/* info */}
           <div className="info">
-            <h5 >{algorithm === "" ? "Choose an algorithm" : "Algorithm : " + algorithm}</h5>
-            <h5 style={{ display: showPath ? "block" : "none" }}>Visited {visitedNodesNumber} Nodes</h5>
-            <h5 style={{ display: showPath ? "block" : "none" }}>Path length {pathNodesNumber}</h5>
-          </div>
-
-
-          {/* social */}
-          <div className="social">
-
-            <div style={{ display: "inline-block" }}>
-              <div className="cube">
-                <a
-                  href="https://www.linkedin.com/in/ali-khutaba-843627173/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img
-                    className="linkedin-img"
-                    src="https://www.freepnglogos.com/uploads/linkedin-logo-hd-png-3.png"
-
-                    alt="Click her"
-                  ></img>
-                </a>
-              </div>
+            <div>
+              <h6 className="info-font">
+                {algorithm === ""
+                  ? "Choose an algorithm"
+                  : "Algorithm : " + algorithm}
+              </h6>
             </div>
-
-
-            <div style={{ display: "inline-block" }}>
-              <div className="cube">
-                <a
-                  href="https://github.com/alikhutaba"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img
-                    className="github-img"
-                    src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/2b14985a-c66e-4dbd-b09c-609fe0678dae/d5ariic-ff63c049-4a2e-46bb-bae5-a420d50a4e54.png"
-                    alt="Click her"
-                  ></img>
-                </a>
-              </div>
-            </div>
-
-            <div className="devo" >
-              <div className="cube">
-                <h6 className="developed">Developed by</h6>
-                <h6 className="developed">Ali Khutaba</h6>
-              </div>
+            <div>
+              <h6
+                className="info-font"
+                style={{ display: showPath ? "block" : "none" }}
+              >
+                Visited {visitedNodesNumber} Nodes. Path length{" "}
+                {pathNodesNumber}
+              </h6>
             </div>
           </div>
-
         </div>
-
-
 
         <div className="col-sm-12" id="mainBoardID">
           {grid.map((row, rowIdx) => {
@@ -453,22 +606,34 @@ class Pathfinding extends React.Component {
                         node.status === SPACE
                           ? "space-node"
                           : node.status === WALL
-                            ? "wall-node"
-                            : node.status === VISITED
-                              ? "visit-node"
-                              : node.status === PATH
-                                ? "path-node"
-                                : node.status === START
-                                  ? "start-node"
-                                  : node.status === TARGET
-                                    ? "target-node"
-                                    : "space-node"
+                          ? "wall-node"
+                          : node.status === VISITED
+                          ? "visit-node"
+                          : node.status === PATH
+                          ? "path-node"
+                          : node.status === START
+                          ? "start-node"
+                          : node.status === TARGET
+                          ? "target-node"
+                          : "space-node"
                       }
-
-                      style={{ height: nodeSize + "px", width: nodeSize + "px" }}
-                      onMouseDown={!isAlgorithmRun ? () => this.onMouseDown(rowIdx, nodeIdx) : null}
-                      onMouseEnter={!isAlgorithmRun ? () => this.onMouseEnter(rowIdx, nodeIdx) : null}
-                      onMouseUp={!isAlgorithmRun ? () => this.onMouseUp() : null}
+                      style={{
+                        height: nodeSize + "px",
+                        width: nodeSize + "px",
+                      }}
+                      onMouseDown={
+                        !isAlgorithmRun
+                          ? () => this.onMouseDown(rowIdx, nodeIdx)
+                          : null
+                      }
+                      onMouseEnter={
+                        !isAlgorithmRun
+                          ? () => this.onMouseEnter(rowIdx, nodeIdx)
+                          : null
+                      }
+                      onMouseUp={
+                        !isAlgorithmRun ? () => this.onMouseUp() : null
+                      }
                     ></div>
                   );
                 })}
@@ -476,7 +641,7 @@ class Pathfinding extends React.Component {
             );
           })}
         </div>
-      </div >
+      </div>
     );
   }
 }
