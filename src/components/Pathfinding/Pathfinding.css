@@ -252,7 +252,8 @@
     margin-bottom: 1%;
     margin-left: 0.5%;
     margin-right: 0.5%;
-    font-family: cursive;
+    /* font-family: cursive; */
+    font-family: Georgia, "Times New Roman", Times, serif;
   }
   .btn {
     width: 100%;
@@ -298,7 +299,8 @@
     margin-right: 0.5%;
     /* background-color: rgba(0, 0, 0, 0.609); */
     color: #00ffff;
-    font-family: cursive;
+    /* font-family: cursive; */
+    font-family: Georgia, "Times New Roman", Times, serif;
   }
   .info-font {
     font-size: small;
