@@ -3,7 +3,7 @@
 
 
 
-![alt text](https://github.com/alikhutaba/Pathfinding-Viusualizer/blob/master/images/Screenshot (83).png)
+![alt text](https://github.com/alikhutaba/Pathfinding-Viusualizer/blob/master/images/Screenshot%20(83).png)
 
 
 
@@ -13,6 +13,17 @@
 Pathfinding Visualizer is an application that visualize Pathfinding algorithms in action.
 
 Link to the APP - https://alikhutaba.github.io/Pathfinding-Viusualizer/
+
+Implemented Algorithm:
+
+A* Search.
+
+Dijkstra’s Algorithm.
+
+Breadth First Search (BFS).
+
+Depth First Search (DFS).
+
 
 ### `Installation`
 
