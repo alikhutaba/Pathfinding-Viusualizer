@@ -53,6 +53,7 @@ class Pathfinding extends React.Component {
       mouseIsPressed: false,
       startNodePressed: false,
       EndNodePressed: false,
+      isClose: true,
     };
 
     this.setUpGrid = this.setUpGrid.bind(this);
@@ -77,7 +78,9 @@ class Pathfinding extends React.Component {
 
   updateWindowDimensions() {
     this.setState({ width: window.innerWidth, height: window.innerHeight });
-    this.setUpGrid(this.state.nodeSize, this.state.clearBoard);
+    console.log(!this.state.isAlgorithmRun);
+    if (!this.state.isAlgorithmRun)
+      this.setUpGrid(this.state.nodeSize, this.state.clearBoard);
   }
 
   async setUpGrid(size, clearBoard) {
@@ -322,6 +325,10 @@ class Pathfinding extends React.Component {
     else this.setState({ mouseIsPressed: false });
   }
 
+  toggleHamburgerIconClass = (e) => {
+    this.setState({ isClose: !this.state.isClose });
+  };
+
   render() {
     const {
       grid,
@@ -339,218 +346,237 @@ class Pathfinding extends React.Component {
       <div className="mainContainer">
         {/* toolbar */}
         <div className="main-bar row">
-          {/* DEV */}
-          <div className="devop">
-            <h6 className="developed">Developed by</h6>
-            <h6 className="developed">Ali Khutaba</h6>
-          </div>
-
-          {/* DEV */}
-          <div className="social-pic">
-            <a
-              href="https://www.linkedin.com/in/ali-khutaba-843627173/"
-              target="_blank"
-              rel="noopener noreferrer"
+          <div className="hamburger-menu">
+            <div
+              id="hamburger-icon"
+              className={this.state.isClose ? "" : "open"}
+              onClick={this.toggleHamburgerIconClass}
             >
-              <img
-                className="linkedin-img"
-                src="https://www.freepnglogos.com/uploads/linkedin-logo-hd-png-3.png"
-                alt="Click her"
-              ></img>
-            </a>
-          </div>
-
-          {/* Github */}
-          <div className="social-pic">
-            <a
-              href="https://github.com/alikhutaba"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img
-                className="github-img"
-                src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/2b14985a-c66e-4dbd-b09c-609fe0678dae/d5ariic-ff63c049-4a2e-46bb-bae5-a420d50a4e54.png"
-                alt="Click her"
-              ></img>
-            </a>
-          </div>
-
-          {/* algorithm Buttons */}
-          <div className="main-button">
-            <button
-              type="button"
-              className="btn btn-outline-primary"
-              data-toggle="dropdown"
-            >
-              {algorithm === "" ? "Algorithm" : algorithm}
-              <a className="dropdown-toggle"></a>{" "}
-            </button>
-
-            <div className="dropdown-menu">
-              <button
-                onClick={
-                  !isAlgorithmRun
-                    ? () => this.setState({ algorithm: BFS })
-                    : null
-                }
-                type="button"
-                className=" dropdown-item"
-              >
-                <h6>Breadth First Search (BFS)</h6>
-              </button>
-              <button
-                onClick={
-                  !isAlgorithmRun
-                    ? () => this.setState({ algorithm: DFS })
-                    : null
-                }
-                type="button"
-                className="dropdown-item"
-              >
-                <h6>Depth First Search (DFS)</h6>
-              </button>
-              <button
-                onClick={
-                  !isAlgorithmRun
-                    ? () => this.setState({ algorithm: DIJKSTRA })
-                    : null
-                }
-                type="button"
-                className="dropdown-item"
-              >
-                <h6>Dijkstra Algorithm</h6>
-              </button>
-              <button
-                onClick={
-                  !isAlgorithmRun
-                    ? () => this.setState({ algorithm: ASTAR })
-                    : null
-                }
-                type="button"
-                className="dropdown-item"
-              >
-                <h6>A* Search</h6>
-              </button>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
             </div>
           </div>
+          {/* MENU --------------------------------------------------------------------- */}
+          <div id="menu" className={this.state.isClose ? "" : "op"}>
+            {/* DEV */}
+            <div className="devop">
+              <h6 className="developed">Developed by</h6>
+              <h6 className="developed">Ali Khutaba</h6>
+            </div>
+            {/* DEV */}
+            <div className="social-pic">
+              <a
+                href="https://www.linkedin.com/in/ali-khutaba-843627173/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  className="linkedin-img"
+                  src="https://www.freepnglogos.com/uploads/linkedin-logo-hd-png-3.png"
+                  alt="Click her"
+                ></img>
+              </a>
+            </div>
 
-          {/* board Buttons */}
-          <div className="main-button">
-            <button
-              type="button"
-              className="btn btn-outline-primary"
-              data-toggle="dropdown"
-            >
-              Board<a className="dropdown-toggle"></a>
-            </button>
+            {/* Github */}
+            <div className="social-pic">
+              <a
+                href="https://github.com/alikhutaba"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  className="github-img"
+                  src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/2b14985a-c66e-4dbd-b09c-609fe0678dae/d5ariic-ff63c049-4a2e-46bb-bae5-a420d50a4e54.png"
+                  alt="Click her"
+                ></img>
+              </a>
+            </div>
 
-            <div className="dropdown-menu">
+            {/* algorithm Buttons */}
+            <div className="main-button">
               <button
-                onClick={!isAlgorithmRun ? () => this.changeBoard(false) : null}
                 type="button"
-                className="dropdown-item"
+                className="btn btn-outline-primary"
+                data-toggle="dropdown"
               >
-                <h6>Random Maze</h6>
+                {algorithm === "" ? "Algorithm" : algorithm}
+                <a className="dropdown-toggle"></a>{" "}
               </button>
+
+              <div className="dropdown-menu">
+                <button
+                  onClick={
+                    !isAlgorithmRun
+                      ? () => this.setState({ algorithm: BFS })
+                      : null
+                  }
+                  type="button"
+                  className=" dropdown-item"
+                >
+                  <h6>Breadth First Search (BFS)</h6>
+                </button>
+                <button
+                  onClick={
+                    !isAlgorithmRun
+                      ? () => this.setState({ algorithm: DFS })
+                      : null
+                  }
+                  type="button"
+                  className="dropdown-item"
+                >
+                  <h6>Depth First Search (DFS)</h6>
+                </button>
+                <button
+                  onClick={
+                    !isAlgorithmRun
+                      ? () => this.setState({ algorithm: DIJKSTRA })
+                      : null
+                  }
+                  type="button"
+                  className="dropdown-item"
+                >
+                  <h6>Dijkstra Algorithm</h6>
+                </button>
+                <button
+                  onClick={
+                    !isAlgorithmRun
+                      ? () => this.setState({ algorithm: ASTAR })
+                      : null
+                  }
+                  type="button"
+                  className="dropdown-item"
+                >
+                  <h6>A* Search</h6>
+                </button>
+              </div>
+            </div>
+
+            {/* board Buttons */}
+            <div className="main-button">
               <button
-                onClick={!isAlgorithmRun ? () => this.clearpath() : null}
                 type="button"
-                className="dropdown-item"
+                className="btn btn-outline-primary"
+                data-toggle="dropdown"
               >
-                <h6>Clear Path</h6>
+                Board<a className="dropdown-toggle"></a>
               </button>
+
+              <div className="dropdown-menu">
+                <button
+                  onClick={
+                    !isAlgorithmRun ? () => this.changeBoard(false) : null
+                  }
+                  type="button"
+                  className="dropdown-item"
+                >
+                  <h6>Random Maze</h6>
+                </button>
+                <button
+                  onClick={!isAlgorithmRun ? () => this.clearpath() : null}
+                  type="button"
+                  className="dropdown-item"
+                >
+                  <h6>Clear Path</h6>
+                </button>
+                <button
+                  onClick={
+                    !isAlgorithmRun ? () => this.changeBoard(true) : null
+                  }
+                  type="button"
+                  className="dropdown-item"
+                >
+                  <h6>Clear Board</h6>
+                </button>
+              </div>
+            </div>
+
+            {/* Size Buttons */}
+            <div className="main-button">
               <button
-                onClick={!isAlgorithmRun ? () => this.changeBoard(true) : null}
                 type="button"
-                className="dropdown-item"
+                className="btn btn-outline-primary"
+                data-toggle="dropdown"
               >
-                <h6>Clear Board</h6>
+                Nodes<a className="dropdown-toggle"></a>
               </button>
+
+              <div className="dropdown-menu">
+                <button
+                  onClick={
+                    !isAlgorithmRun
+                      ? () => this.changeSize(BIG_NODE_SIZE)
+                      : null
+                  }
+                  type="button"
+                  className="dropdown-item"
+                >
+                  <h6>Big Nodes</h6>
+                </button>
+                <button
+                  onClick={
+                    !isAlgorithmRun
+                      ? () => this.changeSize(MEDIUM_NODE_SIZE)
+                      : null
+                  }
+                  type="button"
+                  className="dropdown-item"
+                >
+                  <h6>Medium Nodes</h6>
+                </button>
+                <button
+                  onClick={
+                    !isAlgorithmRun
+                      ? () => this.changeSize(SMALL_NODE_SIZE)
+                      : null
+                  }
+                  type="button"
+                  className="dropdown-item"
+                >
+                  <h6>Small Nodes</h6>
+                </button>
+              </div>
+            </div>
+
+            {/* Size Buttons */}
+            <div className="main-button">
+              <button
+                type="button"
+                className="btn btn-outline-primary"
+                data-toggle="dropdown"
+              >
+                Speed<a className="dropdown-toggle"></a>
+              </button>
+
+              <div className="dropdown-menu">
+                <button
+                  onClick={() => this.setState({ speed: FAST })}
+                  type="button"
+                  className="dropdown-item"
+                >
+                  <h6>Fast</h6>
+                </button>
+                <button
+                  onClick={() => this.setState({ speed: AVERAGE })}
+                  type="button"
+                  className="dropdown-item"
+                >
+                  <h6>Average</h6>
+                </button>
+                <button
+                  onClick={() => this.setState({ speed: SLOW })}
+                  type="button"
+                  className="dropdown-item"
+                >
+                  <h6>Slow</h6>
+                </button>
+              </div>
             </div>
           </div>
-
-          {/* Size Buttons */}
-          <div className="main-button">
-            <button
-              type="button"
-              className="btn btn-outline-primary"
-              data-toggle="dropdown"
-            >
-              Nodes<a className="dropdown-toggle"></a>
-            </button>
-
-            <div className="dropdown-menu">
-              <button
-                onClick={
-                  !isAlgorithmRun ? () => this.changeSize(BIG_NODE_SIZE) : null
-                }
-                type="button"
-                className="dropdown-item"
-              >
-                <h6>Big Nodes</h6>
-              </button>
-              <button
-                onClick={
-                  !isAlgorithmRun
-                    ? () => this.changeSize(MEDIUM_NODE_SIZE)
-                    : null
-                }
-                type="button"
-                className="dropdown-item"
-              >
-                <h6>Medium Nodes</h6>
-              </button>
-              <button
-                onClick={
-                  !isAlgorithmRun
-                    ? () => this.changeSize(SMALL_NODE_SIZE)
-                    : null
-                }
-                type="button"
-                className="dropdown-item"
-              >
-                <h6>Small Nodes</h6>
-              </button>
-            </div>
-          </div>
-
-          {/* Size Buttons */}
-          <div className="main-button">
-            <button
-              type="button"
-              className="btn btn-outline-primary"
-              data-toggle="dropdown"
-            >
-              Speed<a className="dropdown-toggle"></a>
-            </button>
-
-            <div className="dropdown-menu">
-              <button
-                onClick={() => this.setState({ speed: FAST })}
-                type="button"
-                className="dropdown-item"
-              >
-                <h6>Fast</h6>
-              </button>
-              <button
-                onClick={() => this.setState({ speed: AVERAGE })}
-                type="button"
-                className="dropdown-item"
-              >
-                <h6>Average</h6>
-              </button>
-              <button
-                onClick={() => this.setState({ speed: SLOW })}
-                type="button"
-                className="dropdown-item"
-              >
-                <h6>Slow</h6>
-              </button>
-            </div>
-          </div>
-
           {/* run algorithm */}
-          <div className="main-button">
+          <div className="main-button run-button">
             <button
               onClick={
                 !isAlgorithmRun
