@@ -1,0 +1,217 @@
+#tutorial {
+  width: 80%;
+  height: 80%;
+  position: fixed;
+  padding: 2em;
+  left: 50%;
+  top: 50%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  outline: 2px solid #00ffff;
+  background-color: #282c34;
+  color: #00ffff;
+}
+
+.buttons {
+  display: inline-block;
+  padding: 10px 20px 10px 20px;
+  border-radius: 0.25rem;
+}
+
+.section {
+  height: 80%;
+  width: 100%;
+  text-align: center;
+}
+
+.sub-title {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.btn-info {
+  width: 120px !important;
+  height: 40px !important;
+  margin: 10px;
+}
+
+#secend-toturial {
+  display: none;
+}
+
+#third-toturial {
+  display: none;
+}
+
+#fourth-toturial {
+  display: none;
+}
+
+#fifth-toturial {
+  display: none;
+}
+
+.item {
+  height: 60px;
+  border-radius: 50px;
+  color: white;
+  padding-top: 10px;
+  margin: 1px 30% 1px 30%;
+}
+
+.pathfinding-img {
+  margin-top: 30px;
+  width: 30%;
+  height: 50%;
+}
+
+.paragraph {
+  margin-top: 5vh;
+}
+
+.animation1 {
+  animation-name: algorithm-backgorund1;
+  animation-duration: 6s;
+  animation-iteration-count: infinite;
+}
+@keyframes algorithm-backgorund1 {
+  0% {
+    background-color: transparent;
+  }
+  13% {
+    background-color: #00acc1;
+  }
+  25% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: transparent;
+  }
+  75% {
+    background-color: transparent;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.animation2 {
+  animation-name: algorithm-backgorund2;
+  animation-duration: 6s;
+  animation-iteration-count: infinite;
+}
+@keyframes algorithm-backgorund2 {
+  0% {
+    background-color: transparent;
+  }
+  25% {
+    background-color: transparent;
+  }
+  38% {
+    background-color: #00acc1;
+  }
+  50% {
+    background-color: transparent;
+  }
+  75% {
+    background-color: transparent;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.animation3 {
+  animation-name: algorithm-backgorund3;
+  animation-duration: 6s;
+  animation-iteration-count: infinite;
+}
+@keyframes algorithm-backgorund3 {
+  0% {
+    background-color: transparent;
+  }
+  25% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: transparent;
+  }
+  63% {
+    background-color: #00acc1;
+  }
+  75% {
+    background-color: transparent;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+.animation4 {
+  animation-name: algorithm-backgorund4;
+  animation-duration: 6s;
+  animation-iteration-count: infinite;
+}
+@keyframes algorithm-backgorund4 {
+  0% {
+    background-color: transparent;
+  }
+  25% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: transparent;
+  }
+  75% {
+    background-color: transparent;
+  }
+  88% {
+    background-color: #00acc1;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+@media (max-width: 695px) {
+  .title {
+    font-size: 1rem;
+  }
+  .paragraph {
+    font-size: 0.7rem;
+  }
+  .section {
+    height: 60%;
+  }
+
+  a {
+    font-size: 0.7rem;
+  }
+
+  .sub-title {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+  }
+
+  .paragraph {
+    margin-top: 2vh;
+  }
+
+  .item {
+    height: 30px;
+    border-radius: 50px;
+    color: white;
+    padding-top: 5px;
+    margin: 1px 0px 1px 0px;
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 450px) {
+  .sub-title {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 0.8rem;
+  }
+}
