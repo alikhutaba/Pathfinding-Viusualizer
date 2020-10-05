@@ -10,9 +10,9 @@
 
 ### `About`
 
-Pathfinding Visualizer is an application that visualize Pathfinding algorithms in action.
+Pathfinding Visualizer is an application that visualizes Pathfinding algorithms in action.
 
-Link to the APP - https://alikhutaba.github.io/Pathfinding-Viusualizer/
+Live Demo - https://alikhutaba.github.io/Pathfinding-Viusualizer/
 
 Implemented Algorithm:
 
