@@ -36,7 +36,7 @@ class Pathfinding extends React.Component {
     this.state = {
       grid: [],
       algorithm: "",
-      nodeSize: MEDIUM_NODE_SIZE,
+      nodeSize: SMALL_NODE_SIZE,
       startPoint: { height: 1, width: 1 },
       targetPoint: { height: 2, width: 2 },
       isAlgorithmRun: false,
@@ -46,7 +46,7 @@ class Pathfinding extends React.Component {
       showPath: false,
       width: window.innerWidth,
       height: window.innerHeight,
-      clearBoard: false,
+      clearBoard: true,
       speed: AVERAGE,
       previousStartNodeStatus: SPACE,
       previousEndNodeStatus: SPACE,
@@ -78,7 +78,6 @@ class Pathfinding extends React.Component {
 
   updateWindowDimensions() {
     this.setState({ width: window.innerWidth, height: window.innerHeight });
-    console.log(!this.state.isAlgorithmRun);
     if (!this.state.isAlgorithmRun)
       this.setUpGrid(this.state.nodeSize, this.state.clearBoard);
   }
@@ -101,8 +100,8 @@ class Pathfinding extends React.Component {
 
     // set walls
     if (!clearBoard) {
-      for (i = 0; i < height; i++) {
-        for (j = 0; j < width; j++) {
+      for (i = 1; i < height - 1; i++) {
+        for (j = 1; j < width - 1; j++) {
           if (i % 2 === 0) {
             // mostly walls
             if (Math.random() * 100 < 35) grid[i][j].status = WALL;
