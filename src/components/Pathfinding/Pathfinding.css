@@ -3,7 +3,6 @@
   border-collapse: collapse;
   line-height: 0%;
 }
-
 .main-bar {
   text-align: center;
   width: 100%;
@@ -121,8 +120,8 @@
 
 .wall-node {
   display: inline-block;
-  /* background-color: #00000000; */
-  background-color: #000000;
+  background-color: #00000000;
+  /* background-color: #000000; */
 }
 
 .visit-node2 {
