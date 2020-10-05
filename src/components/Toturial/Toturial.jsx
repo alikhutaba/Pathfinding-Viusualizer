@@ -58,11 +58,11 @@ class Toturial extends React.Component {
             <hr style={{ backgroundColor: "rebeccapurple" }}></hr>
 
             <h5 className="sub-title">
-              Pathfinding algorithm find the shortest route between two points.
+              Pathfinding Algorithm find the shortest route between two points.
             </h5>
             <h6 className="paragraph">
               In this application you can see various pathfinding algorithms in
-              action, and how it work
+              action, and how they work.
             </h6>
             {/* <img
             src={pathfindingPic}
@@ -87,7 +87,7 @@ class Toturial extends React.Component {
           <div className="section" id="third-toturial">
             <h3 className="title">Secend step</h3>
             <hr style={{ backgroundColor: "rebeccapurple" }}></hr>
-            <h5 className="paragraph">Choose between clear board or maze.</h5>
+            <h5 className="paragraph">Choose between clear board or a maze.</h5>
             <h6 className="paragraph">
               also you can add walls to the board by click on the node.
             </h6>
@@ -107,14 +107,15 @@ class Toturial extends React.Component {
               Choose the nodes size from three different sizes
             </h5>
             <h5 className="sub-title">
-              And, change the algorthim speed from three different speeds
+              And, choose the algorthim's speed from three different speeds
             </h5>
+            <h2>Enjoy!</h2>
           </div>
           {/* --------------------------------------------------------------------------- */}
 
           <div className="buttons">
             <a
-              href="https://alikhutaba.github.io/Pathfinding-Viusualizer/"
+              href="https://www.youtube.com/watch?v=ds4XW15kUfA"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -126,7 +127,7 @@ class Toturial extends React.Component {
               className="btn btn-info"
               onClick={() => this.changeToturial("prev")}
             >
-              Previes
+              Previous
             </button>
             <button className="btn btn-info" onClick={() => this.skipButton()}>
               Skip
