@@ -5,6 +5,7 @@
 
 ![alt text](https://github.com/alikhutaba/Pathfinding-Viusualizer/blob/master/images/Screenshot%20(83).png)
 
+![alt text](https://github.com/alikhutaba/Pathfinding-Viusualizer/blob/master/public/pathfinding.png?raw=true)
 
 
 
